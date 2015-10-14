@@ -1,0 +1,11 @@
+The kernel that we will use is the Marvell LSP kernel, version
+3.10.70-2015_T1.1 patched with OpenWrt patches.
+
+Download the kernel by using the following commands:
+
+----
+mkdir -p /opt/kernel/marvell
+cd /opt/kernel/marvell
+
+git clone -b openwrt-14.07-3.10.70-15t1 https://github.com/MarvellEmbeddedProcessors/openwrt-kernel.git linux-3.10.70-2015_T1.1
+----
