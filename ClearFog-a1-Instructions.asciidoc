@@ -1,0 +1,224 @@
+== Configuration
+
+The default configuration for this device is available:
+
+----
+cd /opt/openwrt/marvell-openwrt-bb
+wget https://raw.githubusercontent.com/MarvellEmbeddedProcessors/openwrt-misc/openwrt-14.07-a38x-docs-15t1/marvell/38x/clearfog-a1/config -O .config
+----
+
+If you decide not to use the default configuration and configure OpenWrt and
+kernel manually, follow the instructions bellow:
+
+----
+make menuconfig
+----
+
+Make sure the following options are selected:
+
+----
+ Target System (Marvell Armada 37x/38x/XP)  --->
+
+ Target Profile (SolidRun ClearFog a1 board)  --->
+
+ [*] Advanced configuration options (for developers)  --->
+	(/opt/kernel/marvell/linux-3.10.70-2015_T1.1/) Use external kernel tree
+----
+
+The following command will copy the kernel configuration and open the kernel
+menuconfig interface. Use it only if you need too modify kernel configuration.
+
+
+== Flashing the image on SD card
+
+Clean the SD card:
+
+----
+dd if=/dev/zero of=/dev/mmcblk0 bs=1M count=100
+----
+
+Flash the u-boot binary:
+
+----
+dd if=bin/mvebu/u-boot-a38x-2014_T3.0-mmc.bin of=/dev/mmcblk0 bs=512 seek=1
+----
+
+Prepare the SD card partition:
+
+----
+sudo su
+(echo n; echo p; echo 1; echo ''; echo +100M; echo w) | fdisk /dev/mmcblk0
+mkfs.ext4 /dev/mmcblk0p1
+----
+
+Mount and copy over the root filesystem:
+
+----
+mount /dev/mmcblk0p1 /mnt
+tar -xzf bin/mvebu/openwrt-mvebu-388_SOLIDRUN_CLEARFOG_A1-rootfs.tar.gz -C /mnt
+sync
+umount /mnt
+----
+
+In u-boot run the following commands to set up the environment and boot the board:
+
+----
+setenv bootargs console=ttyS0,115200 root=/dev/mmcblk0p1 rw rootwait
+setenv bootcmd 'ext4load mmc 0:1 0x02000000 zImage; ext4load mmc 0:1 0x01800000 armada-388-clearfog.dtb; bootz 0x02000000 - 0x01800000'
+saveenv
+boot
+----
+
+
+== Using NFS as rootfs in OpenWrt
+
+It is possible to use NFS as a rootfs in OpenWrt. The network
+file system is the protocol of choice to share files over an
+internal Local Area Network. Set up a NFS server on build machine.
+
+Next step is to create a mounting point for our rootfs so that
+OpenWrt can use it as its own rootfs. Create a directory in /srv:
+
+----
+mkdir -p /srv/nfs/rootfs
+----
+
+Sudo might be needed. Upon creating, a real rootfs has to be
+mounted on _/srv/nfs/rootfs_. Directory containing OpenWrt rootfs
+if created with OpenWrt toolchain is located in:
+
+----
+build_dir/target-arm_cortex-a9+vfpv3_uClibc-0.9.33.2_eabi/root-mvebu
+----
+
+Mount this directory with the following command in order to use it
+as NFS rootfs for OpenWrt on the /srv/nfs/rootfs location:
+
+----
+sudo mount --bind build_dir/target-arm_cortex-a9+vfpv3_uClibc-0.9.33.2_eabi/root-mvebu /srv/nfs/rootfs
+----
+
+If correctly mounted, you should be able to list _/srv/nfs/rootfs_
+and see the exact folders and files as in
+_build_dir/target-arm_cortex-a9+vfpv3_uClibc-0.9.33.2_eabi/root-mvebu_.
+
+You have to modify exports on your machine. Exports contains folders
+and files which can be used from a client machine for manipulating.
+In other words, it contains a files for sharing with clients.
+
+Open the _/etc/exports_ file with a text editor. Add the following lines:
+
+----
+/srv/nfs/         *(rw,fsid=0,insecure,no_subtree_check,async,no_root_squash)
+/srv/nfs/rootfs   *(rw,insecure,no_subtree_check,async,no_root_squash)
+----
+
+File is space sensitive so keep in mind not to have blank spaces.
+The following two lines are not the same:
+
+----
+/srv/nfs/         *(rw,fsid=0,insecure,no_subtree_check,async,no_root_squash)
+----
+
+and
+
+----
+/srv/nfs/         * (rw,fsid=0,insecure,no_subtree_check,async,no_root_squash)
+----
+
+Asterisk means that all of the clients can access the given folders.
+If you want to limit access with certain IP addresses swap asterisk with
+them. You can also limit certain set of IP addresses for access.
+
+(Re)start all of the necessary services:
+
+----
+sudo systemctl start nfs-server.service
+sudo systemctl start nfs-mountd.service
+----
+
+Depending on the version of NFS other services might be needed (such as
+rcpd services). To check what version is running issue the following
+command:
+
+----
+rpcinfo -p
+----
+
+and the list should look something like:
+
+----
+    program vers proto   port  service
+    100000    4   tcp    111  portmapper
+    100000    3   tcp    111  portmapper
+    100000    2   tcp    111  portmapper
+    100000    4   udp    111  portmapper
+    100000    3   udp    111  portmapper
+    100000    2   udp    111  portmapper
+    100024    1   udp  41182  status
+    100024    1   tcp  52249  status
+    100005    1   udp  20048  mountd
+    100005    1   tcp  20048  mountd
+    100005    2   udp  20048  mountd
+    100005    2   tcp  20048  mountd
+    100005    3   udp  20048  mountd
+    100005    3   tcp  20048  mountd
+    100003    3   udp   2049  nfs
+    100003    4   udp   2049  nfs
+    100227    3   udp   2049  nfs_acl
+    100003    3   tcp   2049  nfs
+    100003    4   tcp   2049  nfs
+    100227    3   tcp   2049  nfs_acl
+    100021    1   udp  47687  nlockmgr
+    100021    3   udp  47687  nlockmgr
+    100021    4   udp  47687  nlockmgr
+    100021    1   tcp  52961  nlockmgr
+    100021    3   tcp  52961  nlockmgr
+    100021    4   tcp  52961  nlockmgr
+----
+
+Here the version of NFS can be seen. If you do not see at least portmapper, nfs,
+and mountd, then you need to restart NFS services.
+
+Once you have it set, boot the board and enter a bootloader. Load the zImage and
+dtb and issue the following command:
+
+----
+setenv bootcmd 'setenv bootargs ${console} ${mtdparts} rootwait root=/dev/nfs rw nfsroot=${serverip}:/srv/nfs/rootfs,v3 ip=dhcp ; nboot kernel ; bootz 0x2000000 - 0x1800000'
+----
+
+and then
+
+----
+boot
+----
+
+
+=== Alternate images
+
+If necessary environment can be reset to the factory defaults with the
+following commands:
+
+----
+resetenv
+reset
+----
+
+To boot the image we first need to set a few environment variables. Replace
+the IP addresses accordingly.
+
+----
+setenv ipaddr <board IP addr>
+setenv serverip <server IP addr>
+setenv ethact egiga1
+setenv ethprime egiga1
+saveenv
+----
+
+For a initramfs image, use the following commands to load the image over tftp
+and boot:
+
+----
+tftpboot openwrt-mvebu-uImage-initramfs-armada-388-clearfog
+bootm
+----
