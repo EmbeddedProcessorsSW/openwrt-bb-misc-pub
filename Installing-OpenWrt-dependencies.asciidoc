@@ -1,0 +1,7 @@
+There are a few dependencies that are needed OpenWrt build environment. Those
+can easily be installed using your distributions package manager. For Debian
+based distributions, run as root:
+
+----
+apt-get install subversion build-essential libncurses5-dev zlib1g-dev gawk git ccache gettext libssl-dev xsltproc file
+----
