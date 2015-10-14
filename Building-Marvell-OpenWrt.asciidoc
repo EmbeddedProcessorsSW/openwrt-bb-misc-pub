@@ -1,0 +1,11 @@
+Build the image with:
+
+----
+make
+----
+
+When compile is finished, the image will be in the following directory:
+
+----
+bin/mvebu/
+----
