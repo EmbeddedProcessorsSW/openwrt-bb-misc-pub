@@ -1,0 +1,38 @@
+Update and install the feeds:
+
+----
+cd /opt/openwrt/marvell-openwrt-bb
+wget https://raw.githubusercontent.com/MarvellEmbeddedProcessors/openwrt-misc/openwrt-14.07-a38x-docs-15t1/marvell/feeds.conf -O feeds.conf
+LC_ALL=C
+./scripts/feeds update -a
+./scripts/feeds install -a
+----
+
+You can download preconfigured configuration file available in board specific
+wiki pages not covered here.
+
+If you decide not to copy the config and configure OpenWrt and kernel
+manually, follow the instructions bellow:
+
+----
+cd /opt/openwrt/marvell-openwrt-bb
+make menuconfig
+----
+
+Make sure the following options are selected:
+
+----
+ Target System (Marvell Armada 37x/38x/XP)  --->
+
+ Target Profile ( << HERE SELECT THE DEVICE YOU ARE BUILDING AN IMAGE FOR >> )  --->
+
+ [*] Advanced configuration options (for developers)  --->
+	(/opt/kernel/marvell/linux-3.10.70-2015_T1.1/) Use external kernel tree
+----
+
+The following command will copy the kernel configuration and open the kernel
+menuconfig interface. Use it only if you need too modify kernel configuration.
+
+----
+make kernel_menuconfig
+----
