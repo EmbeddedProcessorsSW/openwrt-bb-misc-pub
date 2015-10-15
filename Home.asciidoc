@@ -18,3 +18,5 @@ As a last step proceed with the
 link:https://github.com/MarvellEmbeddedProcessors/openwrt-misc/wiki/Building-Marvell-OpenWrt[build]
 and find more information regarding the installation procedure on the board
 pages above.
+
+image::https://raw.githubusercontent.com/wiki/MarvellEmbeddedProcessors/openwrt-misc/luci.png[LuCI interface]
