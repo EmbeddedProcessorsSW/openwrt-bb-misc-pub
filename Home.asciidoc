@@ -4,19 +4,19 @@
 
 Before you start make sure that you have:
 
-* link:https://github.com/MarvellEmbeddedProcessors/openwrt-misc/wiki/Installing-OpenWrt-dependencies[installed needed dependencies]
-* link:https://github.com/MarvellEmbeddedProcessors/openwrt-misc/wiki/Obtaining-Marvell-Kernel[downloaded the kernel]
-* link:https://github.com/MarvellEmbeddedProcessors/openwrt-misc/wiki/Obtaining-Marvell-OpenWrt[downloaded OpenWrt]
-* link:https://github.com/MarvellEmbeddedProcessors/openwrt-misc/wiki/Configuring-OpenWrt[configured OpenWrt]
+* link:https://github.com/MarvellEmbeddedProcessors/openwrt-bb/wiki/Installing-OpenWrt-dependencies[installed needed dependencies]
+* link:https://github.com/MarvellEmbeddedProcessors/openwrt-bb/wiki/Obtaining-Marvell-Kernel[downloaded the kernel]
+* link:https://github.com/MarvellEmbeddedProcessors/openwrt-bb/wiki/Obtaining-Marvell-OpenWrt[downloaded OpenWrt]
+* link:https://github.com/MarvellEmbeddedProcessors/openwrt-bb/wiki/Configuring-OpenWrt[configured OpenWrt]
 
 After that you can follow the more detailed instructions per board:
 
-* link:https://github.com/MarvellEmbeddedProcessors/openwrt-misc/wiki/385-DB-AP-Instructions[385 DB AP]
-* link:https://github.com/MarvellEmbeddedProcessors/openwrt-misc/wiki/ClearFog-a1-Instructions[ClearFog a1]
+* link:https://github.com/MarvellEmbeddedProcessors/openwrt-bb/wiki/385-DB-AP-Instructions[385 DB AP]
+* link:https://github.com/MarvellEmbeddedProcessors/openwrt-bb/wiki/ClearFog-a1-Instructions[ClearFog a1]
 
 As a last step proceed with the
-link:https://github.com/MarvellEmbeddedProcessors/openwrt-misc/wiki/Building-Marvell-OpenWrt[build]
+link:https://github.com/MarvellEmbeddedProcessors/openwrt-bb/wiki/Building-Marvell-OpenWrt[build]
 and find more information regarding the installation procedure on the board
 pages above.
 
-image::https://raw.githubusercontent.com/wiki/MarvellEmbeddedProcessors/openwrt-misc/luci.png[LuCI interface]
+image::https://raw.githubusercontent.com/wiki/MarvellEmbeddedProcessors/openwrt-bb/luci.png[LuCI interface]
