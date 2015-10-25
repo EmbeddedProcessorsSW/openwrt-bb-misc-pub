@@ -1,6 +1,6 @@
-= Marvell Embedded Processors
+= Armada 38x OpenWrt 14.07 (BB) Support
 
-== OpenWrt
+== Introduction
 
 Before you start make sure that you have:
 
