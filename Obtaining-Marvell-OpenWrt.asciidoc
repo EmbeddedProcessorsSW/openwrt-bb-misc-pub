@@ -7,10 +7,20 @@ cd /opt/openwrt
 git clone -b openwrt-14.07-15t1 https://github.com/MarvellEmbeddedProcessors/openwrt-bb.git marvell-openwrt-bb
 ----
 
-In case you are behind the corporate firewall or for some other reason you are
-unable to download 3rd party sources make sure that your
-+/opt/openwrt/marvell-openwrt-bb/dl+ directory contains all needed 3rd party
-sources.
+==== Missing 3rd party source code
+
+OpenWrt build system depends on 3rd party source code which is placed in dl/
+directory. That said, lets say we want to build package XY from fresh OpenWrt
+build. Today everything works fine but tomorrow the XY project might change the
+download URL. Because of this the OpenWrt BB build will fail since there is no
+valid URL known to OpenWrt build system from where it can download XY source
+code. To solve this challenge below is provided an optional step so when needed
+one can easily obtain the 3rd party source code.
+
+This procedure can be used as well in case you are behind the corporate
+firewall or for some other reason you are unable to download 3rd party sources.
+Make sure that your +/opt/openwrt/marvell-openwrt-bb/dl+ directory contains all
+needed 3rd party sources.
 
 You can clone the git repository with 3rd party sources like this:
 
@@ -20,5 +30,3 @@ cd /opt/openwrt/marvell-openwrt-bb
 
 git clone -b openwrt-14.07-a38x-dl-15t1 https://github.com/MarvellEmbeddedProcessors/openwrt-misc.git dl
 ----
-
-Or alternatively you can fetch sources from other places.
