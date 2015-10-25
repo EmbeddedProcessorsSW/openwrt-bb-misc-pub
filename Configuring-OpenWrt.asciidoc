@@ -9,7 +9,9 @@ LC_ALL=C
 ----
 
 You can download preconfigured configuration file available in board specific
-wiki pages not covered here.
+wiki pages not covered here. Links to the board specific pages can be found on
+the link:https://github.com/MarvellEmbeddedProcessors/openwrt-bb/wiki[home]
+page.
 
 If you decide not to copy the config and configure OpenWrt and kernel
 manually, follow the instructions bellow:
