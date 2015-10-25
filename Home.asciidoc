@@ -19,4 +19,7 @@ link:https://github.com/MarvellEmbeddedProcessors/openwrt-bb/wiki/Building-Marve
 and find more information regarding the installation procedure on the board
 pages above.
 
+In case you would like to use already compiled and tested binaries those can be
+found link:https://github.com/MarvellEmbeddedProcessors/openwrt-misc/tree/openwrt-14.07-a38x-bin-15t1/bin/mvebu[here].
+
 image::https://raw.githubusercontent.com/wiki/MarvellEmbeddedProcessors/openwrt-bb/luci.png[LuCI interface]
